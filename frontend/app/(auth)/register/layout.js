@@ -1,10 +1,12 @@
 
 import Image from "next/image";
 import bg_img from "@/public/main-bg.png"
-import { auth } from "../../lib/auth";
+import { AuthProvider } from "@/app/components/authContext";
+
 const layout = async({ children }) => {
-    const session = await auth()
+   
   return (
+    <AuthProvider>
     <div className="grid grid-cols-[16rem_1fr] h-full   gap-12">
       {" "}
       <main className="opacity-90  ">
@@ -23,6 +25,7 @@ const layout = async({ children }) => {
       </main>
       <div className="py-1 flex justify-end">{children}</div>
     </div>
+    </AuthProvider>
   );
 };
 

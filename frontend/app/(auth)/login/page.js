@@ -1,8 +1,10 @@
 import React from 'react'
 import SubmitButton from '@/app/components/SubmitButton'
-import SignInGoogleBtn from '@/app/components/SignInGoogleBtn'
+
 
 import Link from 'next/link'
+import { signInActionCredentials } from '@/app/lib/action'
+import SignInBtn from '@/app/components/SignInBtn'
 export const metadata = {
   title:{
     template:"%s / sharp-messenger",
@@ -32,7 +34,7 @@ const Login = () => {
        
       </div>
 
-        <form className="card-body"  >
+        <form className="card-body"  action={signInActionCredentials}>
           
         
           
@@ -64,7 +66,7 @@ const Login = () => {
              
             </label>
           </div>
-          <SubmitButton  pendingLabel="Registering....">Register</SubmitButton>
+          <SubmitButton  pendingLabel="Signing....">Login</SubmitButton>
           
           
           
@@ -72,7 +74,8 @@ const Login = () => {
          
         </form>
         <span className="border-t-2 "></span>
-        <SignInGoogleBtn/>
+        <SignInBtn/>
+        
        
         <Link href="/register" className="text-sm text-center my-2">
             Want to register ?{" "}

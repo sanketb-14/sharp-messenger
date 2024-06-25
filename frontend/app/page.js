@@ -2,11 +2,13 @@ import Image from "next/image";
 
 import bg_img from '../public/main-bg.png'
 import Link from "next/link";
-
-
 import { auth } from "./lib/auth";
+
+
+
 export default async function Home() {
   const session = await auth()
+ 
   return (
   <main className="opacity-90  ">
     <Image  src={bg_img} fill  className="object-cover object-top" alt="the-orchid hotel image" placeholder="blur" />

@@ -1,10 +1,9 @@
-
 import { signInAction } from "@/app/lib/action"
 
-function SignInGoogleBtn(){
+function SignInBtn(){
     return (
-       <form action={signInAction}>
-         <button className=' text-lg w-full btn bg-transparent  font-medium'>
+       <form action={signInAction} className="flex justify-center bg-base-200">
+         <button className=' text-lg  btn  font-medium'>
         <img
           src='https://authjs.dev/img/providers/google.svg'
           alt='Google logo'
@@ -16,4 +15,4 @@ function SignInGoogleBtn(){
        </form>
     )
 }
-export default SignInGoogleBtn
+export default SignInBtn

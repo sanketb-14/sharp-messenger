@@ -2,8 +2,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import Logo from '@/public/main-logo.png'
-import { auth } from '@/app/lib/auth'
+import { auth } from '../lib/auth'
 import SignOutButton from './SignOutButton'
+
 // import ThemeChanger from '@/components/ThemeChanger'
 
 
@@ -11,6 +12,8 @@ import SignOutButton from './SignOutButton'
 
 const Navigation = async() => {
     const session = await auth()
+    console.log(session);
+    
     
    
     
@@ -22,21 +25,19 @@ const Navigation = async() => {
         </Link>
         <div className="flex-0">
             <ul className='menu menu-sm sm:menu-lg menu-horizontal px-1 text-accent '>
-                {!session?.user && <li className=' text-sm sm:text-lg '>
-                    <Link href='/register'>Register</Link>
-                </li>}
+                
                 <li  className='text-sm sm:text-lg'>
                     <Link href='/chats'>Chat-room</Link>
                 </li>
                 <li  className=' text-sm sm:text-lg text-accent'>
                     {session?.user?.image ? (<Link href="/account" className='hover:text-accent transition-colors'><img className='rounded-full w-8' src={session.user.image} alt={session.user.name}  referrerPolicy='no-referrer'/>{session.user.name}</Link>): <Link href='/account'>Account</Link>}
                    
-                </li>
+                </li> 
                 <li  className=''>
-                    {!session?.user ? <SignOutButton/>: ""}
+                    {session?.user ? <SignOutButton/>: ""}
                    
                 </li>
-                {/* <li>{<ThemeChanger/>}</li> */}
+                {/* {/* <li>{<ThemeChanger/>}</li> */}
             </ul>
         </div>
       

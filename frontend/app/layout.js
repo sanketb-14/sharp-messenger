@@ -2,6 +2,7 @@
 import "./globals.css";
 import Navigation from "@/app/components/Navigation"
 import {Josefin_Sans} from "next/font/google"
+import { AuthProvider } from "./components/authContext";
 
 const josefin =Josefin_Sans({
   subsets:["latin"],
@@ -21,16 +22,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="business">
+    <html lang="en" data-theme="wireframe">
+      
        <body className={`${josefin.className} min-h-screen flex flex-col relative `}>
         <Navigation/>
         <div className="flex-1 px-4 py-8 grid">
         <main className="max-w-7xl mx-auto w-full">
+         
           {children}
+         
           </main>
         </div>
      
       </body>
+      
     </html>
   );
 }
