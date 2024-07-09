@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import chatLogo from "@/public/chatBg.svg"
-import { auth } from '../lib/auth';
+
 
 
 const page = async() => {
-  const session = await auth()
 
   return (
     <div className='max-w-3xl flex justify-center items-center top-40 relative flex-col '>

@@ -4,6 +4,7 @@ import { auth, signIn, signOut } from "./auth";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+
 export async function signInActionCredentials(formData) {
   const email = formData.get("email");
   const password = formData.get("password");
@@ -30,7 +31,7 @@ export async function signOutAction() {
 }
 
 export async function signUpAction(formData) {
-  console.log(formData);
+  
   const username = formData.get("username");
   const email = formData.get("email");
   const password = formData.get("password");
@@ -61,6 +62,6 @@ export async function signUpAction(formData) {
   // If signup is successful, you might want to automatically sign in the user
   await signIn("credentials", { email, password, redirect: false });
   redirect("/account");
+  
 }
-
 

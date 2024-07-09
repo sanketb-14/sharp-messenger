@@ -17,6 +17,6 @@ module.exports = {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["business","wireframe"],
+    themes: ["business","wireframe", "corporate","nord"],
   },
 };

@@ -1,62 +1,50 @@
 "use client";
-import { getChats } from "../lib/data-service";
 
 import { useState, useEffect, useCallback } from "react";
 import { useOptimistic } from "react";
-import SingleMessage from "./singleMessage";
+import SingleMessage from "./SingleMessage";
 
-const Conversation = ({ initialChats, userID }) => {
-  const [chats, setChats] = useState(initialChats || []);
-  const [optimisticChats, addOptimisticChat] = useOptimistic(
-    chats,
-    (state, newChat) => [...state, newChat]
-  );
+import MessageInput from "./MessageInput";
+import { useParams } from "next/navigation";
+import { useChats } from "../context/ChatContext";
+import socketIO from "socket.io-client";
 
-  // useEffect(() => {
 
-  //     const fetchChats = async() => {
-  //     try {
-  //         const fetchChats = await getChats(singleChat)
-  //         setChats(fetchChats)
-  //         console.log(fetchChats , "Chats fetched");
-  //     } catch (error) {
-  //         console.log("Error fetching chats: ", error);
-  //     }
-  // }
-  // fetchChats()
 
-  // },[])
 
-  console.log("Chats fetched", chats);
+const Conversation = ({ myProfile }) => {
+ 
+  const { chats,addChat,setChats } = useChats();
 
-  // const handleSendMessage = useCallback(async (message) => {
-  //     // Optimistically add the new message
-  //     const optimisticMessage = { id: Date.now(), body: message, pending: true }
-  //     addOptimisticChat(optimisticMessage)
 
-  //     try {
-  //         // Actually send the message
-  //         const sentMessage = await sendMessage(message)
+ 
 
-  //         // Update the chats with the confirmed message
-  //         setChats(currentChats =>
-  //             currentChats.map(chat =>
-  //                 chat.id === optimisticMessage.id ? sentMessage : chat
-  //             )
-  //         )
-  //     } catch (error) {
-  //         console.error("Error sending message:", error)
-  //         // Remove the optimistic message if there was an error
-  //         setChats(currentChats =>
-  //             currentChats.filter(chat => chat.id !== optimisticMessage.id)
-  //         )
-  //     }
-  // }, [addOptimisticChat])
+  // const { socket, onlineUsers } = useSocketContext();
+
+  // const [optimisticChats, addOptimisticChat] = useOptimistic(
+  //   chat,
+  //   (state, newChat) => [...state, newChat]
+  // );
+
+
+
+  if (chats.length < 1)
+    return (
+      <h1 className="font-semibold h-96 text-center text-2xl text-accent mt-40">
+        Not any Conversation .....!
+      </h1>
+    );
 
   return (
-    <div className="w-full h-screen mt-8 m-2 rounded-lg ">
-      {chats.map(chat =>  <SingleMessage chat={chat} userID={userID} key={chat.id} />
-      )}
+    <div className="w-full   mt-8 m-2 rounded-lg  flex flex-col justify-around h-full overflow-auto">
+      {chats.map((chat) => (
+        <SingleMessage
+          chat={chat}
+          key={chat.id}
+          myProfile={myProfile}
+        ></SingleMessage>
+      ))}
+    
     </div>
   );
 };

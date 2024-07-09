@@ -27,7 +27,7 @@ const authConfig = {
         }
         try {
           const user = await getGuest(credentials);
-          console.log("credential user", user);
+          
           if (!user) {
             return null;
           }

@@ -12,7 +12,7 @@ import SignOutButton from './SignOutButton'
 
 const Navigation = async() => {
     const session = await auth()
-    console.log(session);
+   
     
     
    
