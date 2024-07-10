@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useState, useEffect, useContext } from "react";
-import { initSocket, getSocket } from "@/helper/socketClient";
+import io from "socket.io-client";
 
 const SocketContext = createContext(undefined);
 
@@ -18,6 +18,7 @@ export const useSocketContext = () => {
 const socketURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const SocketContextProvider = ({ children }) => {
+  const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socketSession, setSocketSession] = useState();
 
@@ -39,23 +40,26 @@ const SocketContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (socketSession) {
-      const socket = initSocket(socketURL);
+    if (socketSession && typeof window !== "undefined") {
+      const newSocket = io(socketURL, {
+        transports: ["websocket"],
+      });
 
-      socket.on("getOnlineUsers", (users) => {
+      setSocket(newSocket);
+
+      newSocket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
       return () => {
-        socket.emit("disconnect");
-        socket.close();
+        newSocket.close();
       };
     }
   }, [socketSession]);
 
   return (
     <SocketContext.Provider
-      value={{ socket: getSocket(), onlineUsers, userId: socketSession?.user?.id }}
+      value={{ socket, onlineUsers, userId: socketSession?.user?.id }}
     >
       {children}
     </SocketContext.Provider>

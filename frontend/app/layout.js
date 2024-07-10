@@ -1,9 +1,23 @@
 import "./globals.css";
 import Navigation from "@/app/components/Navigation";
 import { Josefin_Sans } from "next/font/google";
-import { AuthProvider } from "./components/authContext";
+
 import { ChatProvider } from "./context/ChatContext";
 import SocketContextProvider from "./context/SocketContext";
+
+// import dynamic from 'next/dynamic';
+
+// const SocketContextProvider = dynamic(
+//   () => import('@/app/context/SocketContext'),
+//   { ssr: false }
+// );
+
+// const ChatProvider = dynamic(
+//   () => import('@/app/context/ChatContext'),
+//   { ssr: false }
+// );
+
+
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
