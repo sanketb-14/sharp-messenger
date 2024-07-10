@@ -15,8 +15,7 @@ export const useSocketContext = () => {
   return context;
 };
 
-const socketURL =
-  process.env.NODE_ENV === "development" ? "http://localhost:4000" : "/";
+const socketURL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const SocketContextProvider = ({ children, session }) => {
   const socketRef = useRef(null);
