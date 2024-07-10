@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useState, useEffect, useContext } from "react";
-import io from "socket.io-client";
 
 const SocketContext = createContext(undefined);
 
@@ -40,21 +39,26 @@ const SocketContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (socketSession && typeof window !== "undefined") {
-      const newSocket = io(socketURL, {
-        transports: ["websocket"],
-      });
+    const setupSocket = async () => {
+      if (socketSession && typeof window !== "undefined") {
+        const { default: io } = await import("socket.io-client");
+        const newSocket = io(socketURL, {
+          transports: ["websocket"],
+        });
 
-      setSocket(newSocket);
+        setSocket(newSocket);
 
-      newSocket.on("getOnlineUsers", (users) => {
-        setOnlineUsers(users);
-      });
+        newSocket.on("getOnlineUsers", (users) => {
+          setOnlineUsers(users);
+        });
 
-      return () => {
-        newSocket.close();
-      };
-    }
+        return () => {
+          newSocket.close();
+        };
+      }
+    };
+
+    setupSocket();
   }, [socketSession]);
 
   return (
