@@ -4,7 +4,7 @@ import { useState, createContext, useContext, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import axiosInstance from "@/helper/axiosInstance";
-import socketIO from "socket.io-client";
+
 import { useSocketContext } from "./SocketContext";
 
 const ChatContext = createContext();
@@ -18,7 +18,7 @@ function ChatProvider({ children }) {
 
   const params = useParams();
   const { singleChat: userId } = params;
-  const {socket} = useSocketContext()
+  const { socket } = useSocketContext();
 
   useEffect(() => {
     const getStoredSession = () => {
@@ -63,25 +63,25 @@ function ChatProvider({ children }) {
     }
   }, [params, session]);
 
-    useEffect(() => {
-      if (socket) {
-        const handleNewMessage = (message) => {
-            setChats((prevChats) => {
-                // Check if the message already exists to prevent duplicates
-                if (!prevChats.some(chat => chat.id === message.id)) {
-                  return [...prevChats, message];
-                }
-                return prevChats;
-              });
-        };
+  useEffect(() => {
+    if (socket) {
+      const handleNewMessage = (message) => {
+        setChats((prevChats) => {
+          // Check if the message already exists to prevent duplicates
+          if (!prevChats.some((chat) => chat.id === message.id)) {
+            return [...prevChats, message];
+          }
+          return prevChats;
+        });
+      };
 
-        socket.on("newMessage", handleNewMessage);
+      socket.on("newMessage", handleNewMessage);
 
-        return () => {
-          socket.off("newMessage", handleNewMessage);
-        };
-      }
-    }, [socket]);
+      return () => {
+        socket.off("newMessage", handleNewMessage);
+      };
+    }
+  }, [socket]);
 
   const addChat = async (newChat) => {
     try {
@@ -90,14 +90,15 @@ function ChatProvider({ children }) {
         `${baseUrl}/api/v1/chats/send/${userId}`,
         { message: newChat }
       );
+      setTimeout(() => {
+        if (socket) {
+          socket.emit("newMessage", {
+            ...res.data,
+            conversationId: res.data.conversationId,
+          });
+        }
+      }, 100);
 
-     
-      if (socket) {
-        socket.emit("newMessage", {
-          ...res.data,
-          conversationId: res.data.conversationId,
-        });
-      }
       return res.data;
     } catch (error) {
       console.log(error);

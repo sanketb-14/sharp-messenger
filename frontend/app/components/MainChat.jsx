@@ -1,25 +1,4 @@
-// import React from "react";
-// import ChatProfile from "./ChatProfile";
-// import Conversation from "./Conversation";
 
-// import { getChats, myProfile } from "../lib/data-service";
-
-// const MainChat = async ({params}) => {
-//   console.log(params);
-//   const {singleChat:userId} = params;
-//   const chats = await getChats(userId);
-//   const user = await myProfile();
-
-//   return (
-//     <div className=" flex flex-col justify-between relative   w-full   h-[64rem]  ">
-//       <ChatProfile />
-//       <Conversation chats={chats} myProfile={user}/>
-//       {/* <MessageInput/> */}
-//     </div>
-//   );
-// };
-
-// export default MainChat;
 
 "use client";
 

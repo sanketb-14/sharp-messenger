@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useState, useEffect, useContext, useRef } from "react";
-import io from "socket.io-client";
+import { createContext, useState, useEffect, useContext } from "react";
+import { initSocket, getSocket } from "@/helper/socketClient";
 
 const SocketContext = createContext(undefined);
 
@@ -15,14 +15,11 @@ export const useSocketContext = () => {
   return context;
 };
 
-const socketURL = process.env.NEXT_PUBLIC_BACKEND_URL
+const socketURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const SocketContextProvider = ({ children, session }) => {
-  const socketRef = useRef(null);
+const SocketContextProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socketSession, setSocketSession] = useState();
-
-  const userId = socketSession?.user?.id;
 
   useEffect(() => {
     const getStoredSession = () => {
@@ -33,7 +30,7 @@ const SocketContextProvider = ({ children, session }) => {
         }
       } catch (error) {
         console.error("Error parsing stored session:", error);
-      } 
+      }
     };
 
     if (typeof window !== "undefined") {
@@ -43,37 +40,22 @@ const SocketContextProvider = ({ children, session }) => {
 
   useEffect(() => {
     if (socketSession) {
-      const socket = io(socketURL, {
-        transports: ["websocket"],
-        query: {
-          userId,
-        },
-      });
-      socketRef.current = socket;
+      const socket = initSocket(socketURL);
 
       socket.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
-    //   socket.on("newMessage", (message) => {
-    //     console.log("New message received via socket:", message);
-    //     // You can implement a callback or use a context function to handle the received message
-    //   });
-
-      return () => { 
-        socketRef.emit("disconnect");
+      return () => {
+        socket.emit("disconnect");
         socket.close();
-        socketRef.current = null;
       };
-    } else if (!socketSession && socketRef.current) {
-      socketRef.current.close();
-      socketRef.current = null;
     }
   }, [socketSession]);
 
   return (
     <SocketContext.Provider
-      value={{ socket: socketRef.current, onlineUsers, userId: socketSession?.user.id }}
+      value={{ socket: getSocket(), onlineUsers, userId: socketSession?.user?.id }}
     >
       {children}
     </SocketContext.Provider>
