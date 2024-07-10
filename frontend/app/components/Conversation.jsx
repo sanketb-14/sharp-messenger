@@ -36,7 +36,7 @@ const Conversation = ({ myProfile }) => {
     );
 
   return (
-    <div className="w-full   mt-8 m-2 rounded-lg  flex flex-col justify-around h-full overflow-auto">
+    <div className="w-full   mt-8 m-2 rounded-lg  flex flex-col justify-start h-full overflow-auto">
       {chats.map((chat) => (
         <SingleMessage
           chat={chat}
