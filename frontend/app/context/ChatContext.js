@@ -20,6 +20,7 @@ function ChatProvider({ children }) {
   const { singleChat: userId } = params;
   const { socket } = useSocketContext();
 
+
   useEffect(() => {
     const getStoredSession = () => {
       try {

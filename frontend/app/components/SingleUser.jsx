@@ -7,6 +7,8 @@ import { useSocketContext } from "../context/SocketContext";
 const SingleUser = ({ user }) => {
   const {onlineUsers} = useSocketContext()
 
+  console.log("Online users", onlineUsers);
+
 ;
   const { id, profilePic, fullName } = user;
   const name = fullName.split("").slice(0,8).join("")
