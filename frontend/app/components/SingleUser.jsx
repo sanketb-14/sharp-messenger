@@ -2,12 +2,15 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { useSocketContext } from "../context/SocketContext";
+// import { useSocketContext } from "../context/SocketContext";
+import { useSocket } from "../hooks/useSocket";
+import { useChats } from "../context/ChatContext";
 
 const SingleUser = ({ user }) => {
-  const {onlineUsers} = useSocketContext()
+  const{session} = useChats()
+  const {onlineUsers} = useSocket(session?.user?.id)
 
-  console.log("Online users", onlineUsers);
+ 
 
 ;
   const { id, profilePic, fullName } = user;

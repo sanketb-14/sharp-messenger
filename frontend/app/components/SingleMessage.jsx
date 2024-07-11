@@ -12,7 +12,7 @@ const SingleMessage = ({ chat, myProfile }) => {
   }
 
   const { senderId, body, createdAt, updatedAt } = chat;
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(userID);
   const profile = searchParams.get("profile");
   const name = searchParams.get("name");
 

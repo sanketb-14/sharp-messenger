@@ -5,7 +5,8 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import axiosInstance from "@/helper/axiosInstance";
 
-import { useSocketContext } from "./SocketContext";
+// import { useSocketContext } from "./SocketContext";
+import { useSocket } from "../hooks/useSocket";
 
 const ChatContext = createContext();
 
@@ -15,11 +16,30 @@ function ChatProvider({ children }) {
   const [chats, setChats] = useState([]);
   const [session, setSession] = useState();
   const [loading, setLoading] = useState(true);
+ 
 
   const params = useParams();
   const { singleChat: userId } = params;
-  const { socket } = useSocketContext();
+  //   const { socket } = useSocketContext();
 
+  useEffect(() => {
+    const getChats = async (userId) => {
+
+      try {
+        const response = await axiosInstance.get(
+          `${baseUrl}/api/v1/chats/send/${userId}`,
+         
+        );
+
+        setChats(response.data);
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+    
+      getChats(userId);
+    
+  }, []);
 
   useEffect(() => {
     const getStoredSession = () => {
@@ -40,29 +60,11 @@ function ChatProvider({ children }) {
     }
   }, []);
 
-  useEffect(() => {
-    const getChats = async (userId) => {
-      if (!session) return;
-      try {
-        const response = await axios.get(
-          `${baseUrl}/api/v1/chats/send/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${session.accessToken}`,
-            },
-            withCredentials: true,
-          }
-        );
+  const { socket } = useSocket(session?.user?.id);
 
-        setChats(response.data);
-      } catch (error) {
-        console.error("Error fetching chats:", error);
-      }
-    };
-    if (params) {
-      getChats(userId);
-    }
-  }, [params, session]);
+ 
+
+
 
   useEffect(() => {
     if (socket) {
@@ -115,6 +117,7 @@ function ChatProvider({ children }) {
         setChats,
         addChat,
         setSession,
+    
       }}
     >
       {children}

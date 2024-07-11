@@ -1,7 +1,7 @@
 import axios from "axios";
 import { auth } from "./auth";
 import { useChats } from "../context/ChatContext";
-import axiosInstance from "@/helper/axiosInstance";
+
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -30,12 +30,7 @@ export async function createGuest(formData) {
   return response.data;
 }
 
-export const getUsers = async function () {
-  const session = await auth();
-  if (!session.accessToken) {
-    throw new Error("No authentication token available");
-  }
-
+export const getUsers = async function (session) {
   try {
     const response = await axios.get(`${baseUrl}/api/v1/chats/allUsers`, {
       headers: {
@@ -43,14 +38,14 @@ export const getUsers = async function () {
       },
       withCredentials: true,
     });
-
     return response.data;
   } catch (error) {
     console.error("Error fetching users:", error.message);
-
     throw error;
   }
 };
+
+
 
 export const getChats = async function (userId, session) {
   if (!session || !session.accessToken) {
@@ -74,8 +69,7 @@ export const getChats = async function (userId, session) {
 };
 
 export const myProfile = async () => {
-  const { session } = useChats();
-  console.log("session:", session);
+  
   if (!session || !session.accessToken) {
     throw new Error("No authentication token available");
   }

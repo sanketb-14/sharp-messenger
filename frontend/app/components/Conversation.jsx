@@ -7,7 +7,7 @@ import SingleMessage from "./SingleMessage";
 import MessageInput from "./MessageInput";
 import { useParams } from "next/navigation";
 import { useChats } from "../context/ChatContext";
-import socketIO from "socket.io-client";
+;
 
 
 

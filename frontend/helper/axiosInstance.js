@@ -1,23 +1,29 @@
 
 // axiosInstance.js
+
+
 import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
 
+
+
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     // Check if the user is logged in
-    const storedSession = localStorage.getItem("session");
+    const storedSession = localStorage.getItem("session") || session
+    
 
-    console.log("Stored session:", storedSession);
+   ;
+  
 
     if (storedSession) {
       try {
         const session = JSON.parse(storedSession);
-        console.log("Parsed session:", session);
+       
 
         // If the token exists and the user is logged in, add it to the request headers
         if (session.accessToken && session.user) {

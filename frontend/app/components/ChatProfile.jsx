@@ -2,16 +2,21 @@
 
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import { useSocketContext } from "../context/SocketContext";
+// import { useSocketContext } from "../context/SocketContext";
+import { useSocket } from "../hooks/useSocket";
+import { useChats } from "../context/ChatContext";
 
 const ChatProfile = () => {
   const searchParams = useSearchParams();
   const profile = searchParams.get("profile");
+  const {session} = useChats()
+  
 
-  const {onlineUsers} = useSocketContext()
+  const {onlineUsers} = useSocket(session?.user?.id)
   const params = useParams()
 
   const {singleChat:userId} = params
+
 
   const isOnline = onlineUsers.includes(userId)
  

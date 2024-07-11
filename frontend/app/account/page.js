@@ -22,6 +22,7 @@ const page = async () => {
         </h1>
         <Link href="/chats" className="btn btn-md btn-accent">Go to your chat section</Link>
       </div>
+      
     </div>
   );
 };
